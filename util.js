@@ -112,11 +112,10 @@ Class Util {
   /**
    * 对象和数组的深拷贝
    * @params { Object/Array } obj
-   * @params { Object } pre
    * @return { Object/Array }
    */
   deepCopy(obj) {
-    if(!obj || typeof obj !== 'obj') return obj
+    if(!obj || typeof obj !== 'object') return obj
     let result = obj instanceof Object ? {} : []
     for(let key in obj) {
       if(obj.hasOwnProperty(key)){
@@ -126,7 +125,52 @@ Class Util {
       }
     }
     return result
+  },
+
+  /**
+   * 手机号码中间四位变*
+   * @params { String } phone
+   * @return { String }
+   */
+  translatePhone(phone) {
+    if(!phone || typeof phone !== 'string') return phone
+    const reg = /^(\d{3})\d*(\d{4})$/
+    return phone.replace(reg,'$1****$2')
+  },
+  
+  /**
+   * 手机号码加空格
+   * @params { String } phone
+   * @return { String }
+   */
+  addPhoneSpace(phone) {
+    if(!phone || typeof phone !== 'string') return phone
+    const reg = /^(.{3})(.{4})(.{4})$/g
+    return phone.replace(reg, '$1 $2 $3')
+  },
+
+  /**
+   * 检查手机号码
+   * @params { String } phone
+   * @return { String }
+   */
+  checkPhone(phone) {
+    if(!phone || typeof phone !== 'string') return phone
+    const reg = /^1[345789]\d{9}$/
+    return reg.test(phone) ? true : false
+  },
+
+  /**
+   * 千分位
+   * @params { Number } value
+   * @return { String }
+   */
+  thousandSeparator(value) {
+    if(isNaN(value - 0)) return value
+    if((value - 0) === 0) return '0'
+    value = value - 0
+    return value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
   }
-}
+};
 
 export default Util
